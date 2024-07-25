@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <title>Records - Record Shop</title>
+</head>
+<body>
+<h1>Records</h1>
+<form method="get" th:action="@{/records}" class="form-inline mb-4">
+    <input type="text" name="artist" placeholder="Artist" class="form-control mr-2" th:value="${param.artist}">
+    <input type="text" name="name" placeholder="Record Title" class="form-control mr-2" th:value="${param.name}">
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Artist</th>
+        <th>Title</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="record : ${records}">
+        <td th:text="${record.artist}"></td>
+        <td th:text="${record.name}"></td>
+        <td>
+            <form method="post" th:action="@{/purchase}">
+                <input type="hidden" name="recordId" th:value="${record.id}">
+                <button type="submit" class="btn btn-success">Buy</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:if="${error}" class="alert alert-danger mt-4" th:text="${error}"></div>
+</body>
+</html>

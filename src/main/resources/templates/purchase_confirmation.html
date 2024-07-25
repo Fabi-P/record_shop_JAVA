@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
+<head>
+    <title>Purchase Confirmation - Record Shop</title>
+</head>
+<body>
+<h1>Purchase Confirmation</h1>
+<div th:if="${message}" class="alert alert-success mt-4" th:text="${message}"></div>
+<a href="/records" class="btn btn-primary">Back to Records</a>
+</body>
+</html>

@@ -7,32 +7,32 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@RestController
-public class  RecordController {
+@Controller
+public class RecordController {
     @Autowired
     private RecordServiceImpl recordServiceImpl;
 
-    // GET endpoint to view records
     @GetMapping("/records")
-    // handles request parameters and calls the method; will return the appropriate HTTP response based on the outcome/exceptions
-    public ResponseEntity<?> getRecords(@RequestParam(required = false) Map<String, String> requestParams) {
+    public String getRecords(@RequestParam(required = false) Map<String, String> requestParams, Model model) {
         try {
-            Map<String, String> params = (requestParams == null) ? new HashMap<>(Map.of()) : requestParams;
-
-               return ResponseEntity.status(HttpStatus.OK).body(recordServiceImpl.requestHandler(params));
+            Map<String, String> params = (requestParams == null) ? new HashMap<>() : requestParams;
+            model.addAttribute("records", recordServiceImpl.requestHandler(params));
+            return "records";
         } catch (InvalidParameterException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            model.addAttribute("error", e.getMessage());
+            return "records";
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            model.addAttribute("error", e.getMessage());
+            return "records";
         }
     }
 }
