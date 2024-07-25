@@ -15,3 +15,6 @@ spring:
       temp:
         use_jdbc_metadata_defaults: false
       dialect: org.hibernate.dialect.MySQLDialect
+  thymeleaf:
+    layout-dialect:
+      enabled: true
